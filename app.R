@@ -9,16 +9,16 @@ data = read.csv("data/ultrasound-drying-time.csv")
 # Define UI ----
 ui <- fluidPage(
   
-  titlePanel("Linear Regression Prediction of Ultrasound Drying Time for Paper Samples; Created by Zahra Noori"),
-
+  titlePanel("DS501-Case Study 3:***Linear Regression Prediction of Ultrasound Drying Time for Paper Samples***; Created by Zahra Noori"),
+  
   
   sidebarLayout(
     
     sidebarPanel(
-      actionButton(inputId = "refresh", label = "New Random set of Data"),
+      actionButton(inputId = "refresh", label = "New Random Set of Data"),
       br(),
       br(),
-      "Please select new data from the set for training the linear regression model. Note equations and results will not appear until button is clicked to run the regression on first set of training data",
+      "Please click *New Randon Set of Data* to select the ata from the set for training the linear regression model. Note equations and results will not appear until button is clicked to run the regression on first set of training data",
       br(),
       br(),
       sliderInput(inputId = "DBMC", label = "Choose an Initial DBMC (%)", value = 120, min = 100, max = 150),
@@ -79,11 +79,11 @@ have a significant impact on the energy consumption at the national level. Hence
                            h3("Conclusions"),
                            "Prediction of the total time of drying as a function of the controlling parameters in the experiments is very important in order to be able to compare the efficiency of different drying technologies. It is also a beneficial statistical example of the strengths of the linear regression analysis. We can very clearly see that there is a trend based on initial DBMC and WRV. In the range of parameters in the data set, a simple method such as linear regression model is predicting the behavior of the data and the relationship between different parameters in a reasonable accuracy for the preliminary estimations in industry. However, the range of the available data is limited to a small range and therefore, the results of the linear regression model is only limited to this range of studied parameters.",
                            br()
-                           ),
+                  ),
                   tabPanel("Single Variable Linear Regression Analysis",
                            plotOutput("scattert"),
                            plotOutput("scatterp")
-                           ),
+                  ),
                   tabPanel("Model Evaluation",
                            withMathJax(),
                            br(),
@@ -93,7 +93,7 @@ have a significant impact on the energy consumption at the national level. Hence
                            plotOutput("test"),
                            br(),
                            br(),
-                          
+                           
                            "Using the predicted residual sum of squares (PRESS), we can evaluate how well the actual total time of drying coincide with the predicted total time of drying",
                            uiOutput('PRESS'),
                            "We can also evaluate the root mean squared error of the prediction (RMSEP)",
@@ -104,72 +104,72 @@ have a significant impact on the energy consumption at the national level. Hence
                            "Since the testing and training data is selected randomly, it is important to note that the values for $R^{2}$ can vary widely. However, $R^{2}$ for most of the selected data set is larger than 0.93 and it means that the linear regression model is an appropriate method for analysing this set of data. For some data sets, the $R^{2}$ has a low value, which means the prediction of linear regression analysis is very poor in those cases."
                            
                            
-                           )
-                  
-                  
                   )
-    
-              )
+                  
+                  
+      )
+      
+    )
     
   )
 )
 
 # Define server logic ----
 server <- function(input, output) {
-
+  
   observeEvent(input$refresh,{
-  #Subset into test and training data sets
-  
-  splitdata = caret::createDataPartition(data[,5], p=0.75, list=F, times=1)
-  traindata = data[splitdata,]
-  testdata =  data[-splitdata,] 
-  
-  
-  
-  #Linear regression on Initial DBMC
-  lrt = lm(Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec. ~ Initial.DBMC..Percent., data=traindata)
-  fitted(lrt)
-  resid(lrt)
-  lrt
-  #Plot the full data set as a scatter plot for Initial DBMC
-  p1 = qplot(data$Initial.DBMC..Percent.,data$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec.)+geom_point(size = 3,na.rm=T, color="green")+xlim(100,150)+ylim(80,170)
-  #Plot training data set in a different color on top
-  p2 = geom_point(aes(traindata$Initial.DBMC..Percent.,traindata$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec.),size=3,color="red", na.rm=T)
-  
-  #Linear regression on WRV
-  lrp = lm(Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec. ~ Water.Retention.Value, data=traindata)
-  fitted(lrp)
-  resid(lrp)
-  lrp
-  
-  #Plot the full data set as a scatter plot for WRV
-  p3 = qplot(data$Water.Retention.Value,data$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec.)+geom_point(size = 3,na.rm=T, color="green")+xlim(1.5,1.9)+ylim(80,170)
-  #Plot training data set in a different color on top
-  p4 = geom_point(aes(traindata$Water.Retention.Value,traindata$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec.),size=3,color="red", na.rm=T)
-  
-  output$scattert = renderPlot({
-    p1 + p2 + geom_abline(intercept = lrt[1]$coefficients[1], slope = lrt[1]$coefficients[2], color="black", size = 1, na.rm=T)+
-    geom_point(aes(x=input$DBMC, y=lrt[1]$coefficients[2]*input$DBMC+lrt[1]$coefficients[1]), colour = "black", size = 5, na.rm=T)+
-    xlab("Initial DBMC (%)")+
-    ylab("Total Time of Ultrasound Drying (sec)")+
-    ggtitle("Total Drying Time vs Initial DBMC")
+    #Subset into test and training data sets
+    
+    splitdata = caret::createDataPartition(data[,5], p=0.75, list=F, times=1)
+    traindata = data[splitdata,]
+    testdata =  data[-splitdata,] 
+    
+    
+    
+    #Linear regression on Initial DBMC
+    lrt = lm(Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec. ~ Initial.DBMC..Percent., data=traindata)
+    fitted(lrt)
+    resid(lrt)
+    lrt
+    #Plot the full data set as a scatter plot for Initial DBMC
+    p1 = qplot(data$Initial.DBMC..Percent.,data$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec.)+geom_point(size = 3,na.rm=T, color="green")+xlim(100,150)+ylim(80,170)
+    #Plot training data set in a different color on top
+    p2 = geom_point(aes(traindata$Initial.DBMC..Percent.,traindata$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec.),size=3,color="red", na.rm=T)
+    
+    #Linear regression on WRV
+    lrp = lm(Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec. ~ Water.Retention.Value, data=traindata)
+    fitted(lrp)
+    resid(lrp)
+    lrp
+    
+    #Plot the full data set as a scatter plot for WRV
+    p3 = qplot(data$Water.Retention.Value,data$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec.)+geom_point(size = 3,na.rm=T, color="green")+xlim(1.5,1.9)+ylim(80,170)
+    #Plot training data set in a different color on top
+    p4 = geom_point(aes(traindata$Water.Retention.Value,traindata$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec.),size=3,color="red", na.rm=T)
+    
+    output$scattert = renderPlot({
+      p1 + p2 + geom_abline(intercept = lrt[1]$coefficients[1], slope = lrt[1]$coefficients[2], color="black", size = 1, na.rm=T)+
+        geom_point(aes(x=input$DBMC, y=lrt[1]$coefficients[2]*input$DBMC+lrt[1]$coefficients[1]), colour = "black", size = 5, na.rm=T)+
+        xlab("Initial DBMC (%)")+
+        ylab("Total Time of Ultrasound Drying (sec)")+
+        ggtitle("Total Drying Time vs Initial DBMC")
     })
-  
-  output$scatterp = renderPlot({
-    p3 + p4 + geom_abline(intercept = lrp[1]$coefficients[1], slope = lrp[1]$coefficients[2], color="black", size = 1)+
-      geom_point(aes(x=input$WRV, y=lrp[1]$coefficients[2]*input$WRV+lrp[1]$coefficients[1]), colour = "black", size = 5)+
-      xlab("Water Retention Value")+
-      ylab("Total Time of Ultrasound Drying (sec)")+
-      ggtitle("Total Drying Time vs Water Retention Value")
-  })
-  
-  output$TimeDBMC = renderText({
-    paste("Predicted Time of Drying at Independent Initial DBMC:", format(round(lrt[1]$coefficients[2]*input$DBMC+lrt[1]$coefficients[1],2),nsmall = 2))
+    
+    output$scatterp = renderPlot({
+      p3 + p4 + geom_abline(intercept = lrp[1]$coefficients[1], slope = lrp[1]$coefficients[2], color="black", size = 1)+
+        geom_point(aes(x=input$WRV, y=lrp[1]$coefficients[2]*input$WRV+lrp[1]$coefficients[1]), colour = "black", size = 5)+
+        xlab("Water Retention Value")+
+        ylab("Total Time of Ultrasound Drying (sec)")+
+        ggtitle("Total Drying Time vs Water Retention Value")
     })
-  
-  output$TimeWRV = renderText({
-    paste("Predicted Time of Drying at Independent Water Retention Value:", format(round(lrp[1]$coefficients[2]*input$WRV+lrp[1]$coefficients[1],2),nsmall = 2))
-  })  
+    
+    output$TimeDBMC = renderText({
+      paste("Predicted Time of Drying at Independent Initial DBMC:", format(round(lrt[1]$coefficients[2]*input$DBMC+lrt[1]$coefficients[1],2),nsmall = 2))
+    })
+    
+    output$TimeWRV = renderText({
+      paste("Predicted Time of Drying at Independent Water Retention Value:", format(round(lrp[1]$coefficients[2]*input$WRV+lrp[1]$coefficients[1],2),nsmall = 2))
+    })  
     #Make 3D scatter plot for both DBMC and WRV
     
     #Linear regression on both DBMC and WRV
@@ -179,26 +179,30 @@ server <- function(input, output) {
     lrpt
     
     #Prediction grid
-    DBMC = c(100:150)
-    WRV = c(1.5:1.9)
-    grid = expand.grid(DBMC,WRV)
-    vals = lrpt[1]$coefficients[1]+lrpt[1]$coefficients[3]*grid[,2]+lrpt[1]$coefficients[2]*grid[,1]
-    TimeofDrying = matrix(vals, nrow = length(DBMC), ncol=length(WRV))  
+    #DBMC = c(50:200)
+    DBMC = data$Initial.DBMC..Percent.
+    #WRV = seq(1, 2, by=.02)
+    WRV = data$Water.Retention.Value
+    #grid = expand.grid(DBMC,WRV)
+    vals = (lrpt[1]$coefficients[1]+lrpt[1]$coefficients[3]*DBMC+lrpt[1]$coefficients[2]*WRV)
+    Time_of_Drying = matrix(vals, nrow = length(DBMC), ncol=length(WRV))  
     
-
+    
     
     
     #Plot the data plus the trendline
-        output$both = renderPlotly({
-        plot_ly(data,x=data$Initial.DBMC..Percent., y=data$Water.Retention.Value, z = data$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec.,type='scatter3d', mode='markers', name = "Test Data") %>%
+    output$both = renderPlotly({
+      plot_ly(data,x=data$Initial.DBMC..Percent., y=data$Water.Retention.Value, z = data$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec.,type='scatter3d', mode='markers', name = "Test Data") %>%
         layout(scene=list(xaxis = list(title='Initial DBMC (Percent)',range=c(100,150)),
-                          yaxis = list(title='Water Retention Value',range=c(1.5,1.9)),
-                          zaxis = list(title='Total Time of Ultrasound Drying',range=c(50,170)))) %>%
+                          yaxis = list(title='Water Retention Value',range=c(1, 2)),
+                          zaxis = list(title='Total Time of Ultrasound Drying',range=c(50,200)))) %>%
         add_trace(x=traindata$Initial.DBMC..Percent., y=traindata$Water.Retention.Value, z=traindata$Total.time.of.Paper.Drying.Using.Ultrasound.Mechanism..sec., type='scatter3d', mode='markers', name = "Training Data") %>%
-        add_surface(x=~WRV,y=~DBMC, z=~TimeofDrying) %>%
+        # add_surface(x=~WRV,y=~DBMC, z=~TimeofDrying) %>%
+        
+        add_surface(data,x=data$Initial.DBMC..Percent., y=data$Water.Retention.Value, z = ~Time_of_Drying) %>%
+        
         add_trace(x=input$DBMC, y=input$WRV, z=lrpt[1]$coefficients[1]+lrpt[1]$coefficients[2]*input$WRV+lrpt[1]$coefficients[3]*input$DBMC, type='scatter3d', mode='markers', name = "Predicted Point")
-     
-          
+      
       
     })
     
@@ -215,7 +219,7 @@ server <- function(input, output) {
     
     #PRESS
     PRESS = sum((prediction$Reference - prediction$Predicted)^2)
-      
+    
     output$PRESS = renderUI({
       withMathJax(sprintf("$$PRESS = \\sum_{i=1}^{n} (y^{ref}_{i}-y^{pred}_{i})^{2} = %.03f$$", PRESS))
     })
@@ -243,16 +247,19 @@ server <- function(input, output) {
     
     #Equation coefficients
     output$coef = renderUI({
-      withMathJax(sprintf("$$Time of Drying = (%.03f)_{0} + (%.03f)_{DBMC} DBMC + (%.03f)_{WRV} WRV$$",lrpt[1]$coefficients[1],lrpt[1]$coefficients[3],lrpt[1]$coefficients[2]))
+      withMathJax(sprintf("$$Time-of-Drying = (%.03f)_{0} + (%.03f)_{DBMC} DBMC + (%.03f)_{WRV} WRV$$",lrpt[1]$coefficients[1],lrpt[1]$coefficients[3],lrpt[1]$coefficients[2]))
     })
     
   })
   
   
-  }
+}
 
 # Run the app ----
 shinyApp(ui = ui, server = server)
 
 #Run the app in GitHub:
-shiny::runGitHub("ZahraNoori2021", "rstudio", subdir = "DS501-CS1-ZahraNoori")
+#shiny::runGitHub("ZahraNoori2021", "rstudio", subdir = "ZahraNoori")
+
+#Run the app in GitHub:
+shiny::runGitHub("ZahraNoori2021/ZahraNoori", "rstudio", subdir = "app.R")
